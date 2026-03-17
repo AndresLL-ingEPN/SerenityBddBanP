@@ -1,0 +1,102 @@
+buildscript {
+    ext.serenityCoreVersion = '4.0.27'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:${serenityCoreVersion}")
+        classpath "net.serenity-bdd:serenity-single-page-report:${serenityCoreVersion}"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+}
+
+// ← Se aplica SOLO desde buildscript para evitar doble carga del plugin
+apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
+
+defaultTasks 'clean', 'test', 'aggregate'
+
+group 'co.com.screenplay.project'
+version '1.0-SNAPSHOT'
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+// Serenity BDD 4.x requiere Java 11 como mínimo
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+ext {
+    slf4jVersion = '1.7.7'
+    // ← ELIMINADAS: serenityCoreVersion y serenityCucumberVersion que pisaban la versión 4.0.27
+    //   Ahora se usa directamente serenityCoreVersion definida en buildscript.ext
+    junitVersion = '4.13.2'
+    assertJVersion = '3.22.0'
+    logbackVersion = '1.4.14'
+    lombokVersion = '1.18.22'
+    log4jVersion = '2.17.1'
+    apachePoiVersion = '5.2.3'
+}
+
+dependencies {
+    testImplementation("net.serenity-bdd:serenity-core:${serenityCoreVersion}") {
+        exclude group: 'org.apache.groovy', module: 'groovy'
+    }
+    implementation "net.serenity-bdd:serenity-ensure:${serenityCoreVersion}"
+    implementation "net.serenity-bdd:serenity-junit:${serenityCoreVersion}"
+    implementation "net.serenity-bdd:serenity-cucumber:${serenityCoreVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay:${serenityCoreVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:${serenityCoreVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay-rest:${serenityCoreVersion}"
+
+    implementation "org.apache.poi:poi:${apachePoiVersion}"
+    implementation "org.apache.poi:poi-ooxml:${apachePoiVersion}"
+
+    testImplementation "junit:junit:${junitVersion}"
+    implementation "org.assertj:assertj-core:${assertJVersion}"
+    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
+}
+
+test {
+    useJUnit()
+    scanForTestClasses = false
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+    systemProperty "edge.driver.version", "146.0.3856.59"
+    systemProperty "webdriver.edge.driver", "${rootDir}/drivers/msedgedriver.exe"
+    include "**/runners/**"
+
+    // ← CLAVE: evita que Gradle mate el proceso antes de recibir eventos de test
+    maxParallelForks = 1
+    forkEvery = 0
+    jvmArgs '-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError'
+
+    doFirst {
+        filter.commandLineIncludePatterns.clear()
+    }
+}
+
+serenity {
+    testRoot = "co.com.screenplay.project.runners"
+    requirementsBaseDir = "src/test/resources/features"
+    reports = ["single-page-html"]
+}
+
+gradle.startParameter.continueOnFailure = true
+test.finalizedBy(aggregate)
