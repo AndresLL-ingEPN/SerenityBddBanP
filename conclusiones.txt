@@ -1,7 +1,7 @@
 ================================================================================
   CONCLUSIONES DE REVISION
   Proyecto: Serenity BDD Automation - Swaglabs (saucedemo.com)
-  Revisado por: QA SR Automation Engineer
+  Revisado por: QA Andres Llumiquinga
   Fecha: 2026-03-17
 ================================================================================
 
