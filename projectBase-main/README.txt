@@ -39,7 +39,7 @@ Flujo cubierto:
 ================================================================================
 
   [1] Java JDK 11 instalado
-      - Descargar desde: https://adoptium.net/temurin/releases/?version=11
+      - Descargar desde:https://adoptium.net/temurin/releases/?version=11
       - Configurar variable de entorno JAVA_HOME apuntando a la carpeta del JDK
       - Agregar %JAVA_HOME%\bin al PATH del sistema
 
