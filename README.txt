@@ -163,7 +163,7 @@ Flujo cubierto:
   TAGS DISPONIBLES EN LOS FEATURES
 ================================================================================
 
-  @FlujoCompleto3 -> Flujo completo de compra en Swaglabs (escenario activo)
+  @FlujoCompletoBP -> Flujo completo de compra en Swaglabs (escenario activo)
   @flujoCompleto  -> Nivel Feature completo de Swaglabs
 
 

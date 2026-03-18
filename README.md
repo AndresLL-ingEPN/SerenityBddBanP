@@ -438,25 +438,9 @@ La aplicación bajo prueba (`https://www.saucedemo.com/`) debe ser accesible des
 | Prioridad | ID | Hallazgo | Estado |
 |---|---|---|---|
 | 🔴 ALTA | LA-01 | Localizadores XPath donde hay ID disponible en `PageCar` y `PageProducts` | ⏳ Pendiente |
-| 🔴 ALTA | LA-02 | Falta assertion post-login con `LABEL_PRODUCT` (no se valida que el login fue exitoso) | ⏳ Pendiente |
-| 🟡 MEDIA | LA-03 | Localizador por clase CSS frágil en `PageProducts.BUTTON_CART` | ⏳ Pendiente |
+| 🟡 MEDIA | LA-02 | Localizador por clase CSS frágil en `PageProducts.BUTTON_CART` | ⏳ Pendiente |
 | 🟡 MEDIA | ET-01 | Solo existe el happy path — sin escenarios negativos (credenciales inválidas, campos vacíos) | ⏳ Pendiente |
-| 🟡 MEDIA | ET-02 | Datos de prueba CSV (`WebDataSwagLabs.csv`) presentes pero no integrados al flujo | ⏳ Pendiente |
-| 🟢 BAJA | DM-01 | Evaluar WebDriverManager para gestión automática del driver (eliminar `drivers/` del repo) | ⏳ Pendiente |
-| 🟢 BAJA | DM-02 | Agregar pruebas unitarias a las Tasks con JUnit + Mockito | ⏳ Pendiente |
-
-**Calificación del proyecto (post-correcciones aplicadas):**
-
-| Dimensión | Calificación |
-|---|---|
-| Arquitectura Screenplay | 9/10 |
-| Estrategia de localizadores | 5/10 |
-| Cobertura de escenarios | 4/10 |
-| Logging y trazabilidad | 8/10 |
-| Configuración del framework | 7/10 |
-| Calidad y limpieza del código | 8/10 |
-| Documentación técnica | 8/10 |
-| **GLOBAL** | **7.5/10** |
+| 🟢 BAJA | DM-01 | Agregar pruebas unitarias a las Tasks con JUnit + Mockito | ⏳ Pendiente |
 
 ---
 
