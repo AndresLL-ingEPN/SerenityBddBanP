@@ -21,4 +21,16 @@ public class ModelCredentials {
             this.password = columns.get("password");
         }
     }
+
+    /**
+     * Constructor alternativo para usar con Scenario Outline,
+     * donde los valores se obtienen directamente como parámetros de tipo String.
+     *
+     * @param user     usuario de acceso
+     * @param password contraseña de acceso
+     */
+    public ModelCredentials(String user, String password) {
+        this.user = user;
+        this.password = password;
+    }
 }

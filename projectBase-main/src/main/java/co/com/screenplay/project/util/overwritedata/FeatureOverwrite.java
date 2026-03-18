@@ -29,6 +29,54 @@ public class FeatureOverwrite {
         addExternalDataToFeature(featurePath);
     }
 
+    public static void restoreFeatureFiles(final String featurePath) throws IOException {
+        restoreExternalDataToFeature(featurePath);
+    }
+
+    private static void restoreExternalDataToFeature(final String featurePath) throws IOException {
+        File featureFile = new File(featurePath);
+        List<String> restoredLines = new ArrayList<>();
+        try (BufferedReader buffReader = Files.newBufferedReader(
+                java.nio.file.Paths.get(featureFile.getAbsolutePath()), StandardCharsets.UTF_8)) {
+            String line;
+            boolean insideExamples = false;
+            boolean externalDataRestored = false;
+            while ((line = buffReader.readLine()) != null) {
+                if (line.trim().toLowerCase().startsWith("examples")) {
+                    insideExamples = true;
+                    externalDataRestored = false;
+                    restoredLines.add(line);
+                    continue;
+                }
+                if (insideExamples) {
+                    // Línea comentada que contiene @externaldata → restaurar sin el #
+                    if (line.trim().startsWith("#") && line.contains("@externaldata")) {
+                        String restored = line.trim().substring(1).trim();
+                        restoredLines.add("      " + restored);
+                        externalDataRestored = true;
+                        continue;
+                    }
+                    // Saltar filas de datos generadas (headers e instancias del Excel)
+                    if (externalDataRestored && line.trim().startsWith("|")) {
+                        continue;
+                    }
+                    // Saltar la línea con headers generada por el Excel (antes de restaurar)
+                    if (!externalDataRestored && line.trim().startsWith("|") && !line.contains("@externaldata")) {
+                        continue;
+                    }
+                }
+                restoredLines.add(line);
+            }
+        }
+        try (BufferedWriter writer = Files.newBufferedWriter(
+                java.nio.file.Paths.get(featureFile.getAbsolutePath()), StandardCharsets.UTF_8)) {
+            for (final String writeLine : restoredLines) {
+                writer.write(writeLine);
+                writer.write("\n");
+            }
+        }
+    }
+
     private static void addExternalDataToFeature(final String featurePath) throws IOException {
         File featureFile = new File(featurePath);
         List<String> featureWithExternalData;

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -18,5 +17,19 @@ public class ModelCustomer {
         this.name = data.get(1).get(0);
         this.lastname = data.get(1).get(1);
         this.zip = data.get(1).get(2);
+    }
+
+    /**
+     * Constructor alternativo para usar con Scenario Outline,
+     * donde los valores se obtienen directamente como parámetros de tipo String.
+     *
+     * @param name     nombre del cliente
+     * @param lastname apellido del cliente
+     * @param zip      código postal del cliente
+     */
+    public ModelCustomer(String name, String lastname, String zip) {
+        this.name = name;
+        this.lastname = lastname;
+        this.zip = zip;
     }
 }
